@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>角色系统 - 凡人修仙传</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#d4af37',
+            secondary: '#b80000',
+            accent: '#4dabf7',
+            dark: '#0d1421'
+          },
+          fontFamily: {
+            xianxia: ['"STKaiti"', '"KaiTi"', 'serif'],
+            zhongwen: ['"STZhongsong"', '"SimSun"', 'serif']
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .xianxia-shadow {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      }
+      .bg-blur {
+        backdrop-filter: blur(10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面背景 -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <div id="backgroundAnimation" class="absolute inset-0 bg-dark opacity-90"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8 relative z-10">
+    <!-- 头部标题 -->
+    <header class="header mb-10">
+      <h1 class="text-4xl font-xianxia text-primary text-center">角色系统</h1>
+      <p class="text-lg text-center text-gray-300 font-zhongwen">修仙之路，逆天改命</p>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav class="navbar mb-10">
+      <a href="index.html" class="nav-item">首页</a>
+      <a href="character.html" class="nav-item active">角色</a>
+      <a href="quest.html" class="nav-item">任务</a>
+      <a href="battle.html" class="nav-item">战斗</a>
+      <a href="market.html" class="nav-item">交易</a>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <main class="space-y-10">
+      <!-- 角色基本信息 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <div class="flex flex-col md:flex-row gap-8 items-center">
+          <!-- 角色形象 -->
+          <div class="w-full md:w-1/3 flex justify-center">
+            <div class="relative cultivation-border w-64 h-80 bg-dark rounded-lg flex items-center justify-center overflow-hidden">
+              <div id="characterAvatar" class="w-full h-full bg-cover bg-center" style="background-image: url('assets/character-placeholder.png');"></div>
+              <!-- 修仙境界特效 -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-40 h-40 rounded-full border-4 border-primary opacity-50 animate-pulse"></div>
+              </div>
+              <!-- 角色名称 -->
+              <div class="absolute bottom-4 left-0 right-0 text-center">
+                <h2 class="text-2xl font-xianxia text-primary">韩立</h2>
+                <p class="text-lg text-accent">练气期九层</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 角色属性 -->
+          <div class="w-full md:w-2/3">
+            <h3 class="text-2xl font-xianxia text-primary mb-4 border-b border-primary pb-2">基本属性</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="stat-item">
+                <span class="stat-name">攻击</span>
+                <span class="stat-value">250</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">防御</span>
+                <span class="stat-value">180</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">生命值</span>
+                <span class="stat-value">1500</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">法力值</span>
+                <span class="stat-value">1200</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">暴击率</span>
+                <span class="stat-value">15%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">闪避率</span>
+                <span class="stat-value">10%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">神识</span>
+                <span class="stat-value">300</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-name">根骨</span>
+                <span class="stat-value">45</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 修炼进度 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-4 border-b border-primary pb-2">修炼进度</h3>
+        
+        <div class="space-y-6">
+          <!-- 境界进度 -->
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-300">练气期九层 → 筑基期</span>
+              <span class="text-primary">75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%"></div>
+            </div>
+          </div>
+
+          <!-- 修炼按钮 -->
+          <div class="text-center">
+            <button id="cultivateBtn" class="btn px-8 py-3 text-lg">开始修炼</button>
+          </div>
+
+          <!-- 修炼提示 -->
+          <div class="bg-dark/70 p-4 rounded-lg border border-accent/30">
+            <h4 class="text-lg font-xianxia text-accent mb-2">修炼提示</h4>
+            <p class="text-gray-400">
+              1. 修炼需要消耗一定的灵气值<br>
+              2. 服用丹药可以加快修炼速度<br>
+              3. 寻找灵脉之地修炼效果更佳<br>
+              4. 突破境界时可能遭遇心魔劫
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 技能与法术 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-4 border-b border-primary pb-2">技能与法术</h3>
+        
+        <div class="space-y-6">
+          <!-- 技能列表 -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div class="skill-icon">
+              <span class="text-3xl">⚡</span>
+            </div>
+            <div class="skill-icon">
+              <span class="text-3xl">🔥</span>
+            </div>
+            <div class="skill-icon">
+              <span class="text-3xl">💧</span>
+            </div>
+            <div class="skill-icon">
+              <span class="text-3xl">🌪️</span>
+            </div>
+            <div class="skill-icon">
+              <span class="text-3xl">🛡️</span>
+            </div>
+            <div class="skill-icon">
+              <span class="text-3xl">✨</span>
+            </div>
+          </div>
+
+          <!-- 技能详情 -->
+          <div id="skillDetail" class="bg-dark/70 p-4 rounded-lg border border-primary/30">
+            <h4 class="text-xl font-xianxia text-primary mb-2">雷灵术</h4>
+            <p class="text-gray-400 mb-3">释放一道雷灵力攻击敌人，有几率造成麻痹效果。</p>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-300">等级: 3</span>
+              <span class="text-gray-300">伤害: 180-220</span>
+              <span class="text-gray-300">消耗: 80法力</span>
+              <span class="text-gray-300">冷却: 5秒</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 装备与法宝 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-4 border-b border-primary pb-2">装备与法宝</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- 装备栏 -->
+          <div>
+            <h4 class="text-xl font-xianxia text-accent mb-4">装备</h4>
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-dark/70 rounded-lg border border-primary/30">
+                <div class="w-10 h-10 mr-3 bg-primary/20 rounded flex items-center justify-center">
+                  <span class="text-primary">👕</span>
+                </div>
+                <div class="flex-1">
+                  <h5 class="text-gray-300">青冥道袍</h5>
+                  <p class="text-sm text-gray-400">防御+45，法抗+20</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center p-3 bg-dark/70 rounded-lg border border-primary/30">
+                <div class="w-10 h-10 mr-3 bg-primary/20 rounded flex items-center justify-center">
+                  <span class="text-primary">🗡️</span>
+                </div>
+                <div class="flex-1">
+                  <h5 class="text-gray-300">青木剑</h5>
+                  <p class="text-sm text-gray-400">攻击+65，暴击+5%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 法宝栏 -->
+          <div>
+            <h4 class="text-xl font-xianxia text-accent mb-4">法宝</h4>
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-dark/70 rounded-lg border border-primary/30">
+                <div class="w-10 h-10 mr-3 bg-primary/20 rounded flex items-center justify-center">
+                  <span class="text-primary">🔮</span>
+                </div>
+                <div class="flex-1">
+                  <h5 class="text-gray-300">御空飞行符</h5>
+                  <p class="text-sm text-gray-400">消耗灵力，可在空中飞行</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center p-3 bg-dark/70 rounded-lg border border-primary/30">
+                <div class="w-10 h-10 mr-3 bg-primary/20 rounded flex items-center justify-center">
+                  <span class="text-primary">📜</span>
+                </div>
+                <div class="flex-1">
+                  <h5 class="text-gray-300">聚气丹方</h5>
+                  <p class="text-sm text-gray-400">可炼制聚气丹，提升修炼速度</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 背包 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-2xl font-xianxia text-primary border-b border-primary pb-2">背包</h3>
+          <span class="text-gray-300">12/50 格</span>
+        </div>
+        
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-3">
+          <!-- 背包物品 -->
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">💊</span>
+            <p class="text-xs text-gray-300">聚气丹</p>
+            <p class="text-xs text-primary">x5</p>
+          </div>
+          
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">💰</span>
+            <p class="text-xs text-gray-300">下品灵石</p>
+            <p class="text-xs text-primary">x120</p>
+          </div>
+          
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">🪨</span>
+            <p class="text-xs text-gray-300">玄铁</p>
+            <p class="text-xs text-primary">x8</p>
+          </div>
+          
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">📜</span>
+            <p class="text-xs text-gray-300">任务卷轴</p>
+            <p class="text-xs text-primary">x2</p>
+          </div>
+          
+          <!-- 空背包格 -->
+          <div class="bg-dark/30 p-3 rounded-lg border border-gray-700/30 aspect-square flex items-center justify-center text-gray-500">
+            <span>空</span>
+          </div>
+          
+          <!-- 重复空背包格 -->
+          <div class="bg-dark/30 p-3 rounded-lg border border-gray-700/30 aspect-square flex items-center justify-center text-gray-500">
+            <span>空</span>
+          </div>
+          
+          <div class="bg-dark/30 p-3 rounded-lg border border-gray-700/30 aspect-square flex items-center justify-center text-gray-500">
+            <span>空</span>
+          </div>
+          
+          <div class="bg-dark/30 p-3 rounded-lg border border-gray-700/30 aspect-square flex items-center justify-center text-gray-500">
+            <span>空</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-16 footer">
+      <p>© 2023 凡人修仙传网页RPG游戏 - 体验真实的修仙世界</p>
+    </footer>
+  </div>
+
+  <!-- 脚本 -->
+  <script src="game.js"></script>
+  <script>
+    // 角色系统相关逻辑
+    document.addEventListener('DOMContentLoaded', () => {
+      // 尝试获取角色管理器
+      let characterManager;
+      try {
+        characterManager = window.require ? window.require('characterManager') : null;
+        
+        // 如果有角色管理器，则更新角色信息
+        if (characterManager) {
+          updateCharacterInfo(characterManager.getStatus());
+        }
+      } catch (e) {
+        console.log('角色系统模块加载中...');
+      }
+      
+      // 初始化技能系统
+      initSkills();
+      // 初始化装备系统
+      initEquipment();
+      // 初始化背包系统
+      initInventory();
+      // 初始化修炼按钮
+      initCultivationBtn();
+      
+      // 监听角色状态更新事件
+      document.addEventListener('characterStatusUpdated', (e) => {
+        updateCharacterInfo(e.detail);
+      });
+    });
+    
+    // 更新角色信息显示
+    function updateCharacterInfo(characterStatus) {
+      if (!characterStatus) return;
+      
+      // 更新角色名称
+      const charName = document.querySelector('.char-name');
+      if (charName) {
+        charName.textContent = characterStatus.name;
+      }
+      
+      // 更新境界
+      const realm = document.querySelector('.realm');
+      if (realm) {
+        realm.textContent = characterStatus.realm;
+      }
+      
+      // 更新血量
+      const healthDisplay = document.querySelector('.char-stats .text-primary:first-child');
+      if (healthDisplay) {
+        healthDisplay.textContent = `${characterStatus.health}/${characterStatus.maxHealth}`;
+      }
+      
+      // 更新法力
+      const manaDisplay = document.querySelector('.char-stats .text-accent:first-child');
+      if (manaDisplay) {
+        manaDisplay.textContent = `${characterStatus.mana}/${characterStatus.maxMana}`;
+      }
+      
+      // 更新血条和法力条
+      const healthBar = document.querySelector('.char-stats .progress-bar:first-child .progress-fill');
+      const manaBar = document.querySelector('.char-stats .progress-bar:last-child .progress-fill');
+      
+      if (healthBar) {
+        healthBar.style.width = `${(characterStatus.health / characterStatus.maxHealth) * 100}%`;
+      }
+      
+      if (manaBar) {
+        manaBar.style.width = `${(characterStatus.mana / characterStatus.maxMana) * 100}%`;
+      }
+    }
+  </script>
+</body>
+</html>

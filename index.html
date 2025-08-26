@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>凡人修仙传 - 网页RPG游戏</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#d4af37',
+            secondary: '#b80000',
+            accent: '#4dabf7',
+            dark: '#0d1421'
+          },
+          fontFamily: {
+            xianxia: ['"STKaiti"', '"KaiTi"', 'serif'],
+            zhongwen: ['"STZhongsong"', '"SimSun"', 'serif']
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .xianxia-shadow {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      }
+      .bg-blur {
+        backdrop-filter: blur(10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面背景动画 -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <div id="backgroundAnimation" class="absolute inset-0 bg-dark opacity-90"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8 relative z-10">
+    <!-- 头部标题 -->
+    <header class="header mb-10 cultivation-border">
+      <h1 class="text-5xl font-xianxia text-primary text-center mb-4 animate-pulse">凡人修仙传</h1>
+      <p class="text-xl text-center text-gray-300 font-zhongwen">修仙问道，逆天改命</p>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="flex flex-col lg:flex-row gap-10">
+      <!-- 游戏介绍 -->
+      <section class="w-full lg:w-1/2 bg-panel p-8 rounded-lg border-2 border-primary xianxia-shadow">
+        <h2 class="text-2xl font-xianxia text-primary mb-6 border-b border-primary pb-3">游戏简介</h2>
+        
+        <div class="space-y-6">
+          <p class="text-gray-300 leading-relaxed">
+            《凡人修仙传》网页RPG游戏改编自知名网络小说，完美还原小说中的修仙世界。玩家将扮演一名普通修士，
+            从练气期开始，逐步修炼至传说中的大乘期，体验修仙路上的种种磨难与机遇。
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-dark/70 p-4 rounded-lg border border-primary/30">
+              <h3 class="text-xl font-xianxia text-primary mb-2">修炼系统</h3>
+              <p class="text-gray-400">体验练气、筑基、金丹、元婴等修仙境界的突破历程</p>
+            </div>
+            
+            <div class="bg-dark/70 p-4 rounded-lg border border-primary/30">
+              <h3 class="text-xl font-xianxia text-primary mb-2">任务冒险</h3>
+              <p class="text-gray-400">跟随韩立的脚步，完成主线任务，探索修仙世界的奥秘</p>
+            </div>
+            
+            <div class="bg-dark/70 p-4 rounded-lg border border-primary/30">
+              <h3 class="text-xl font-xianxia text-primary mb-2">战斗系统</h3>
+              <p class="text-gray-400">体验紧张刺激的PVE副本和PVP竞技，展示你的修仙实力</p>
+            </div>
+            
+            <div class="bg-dark/70 p-4 rounded-lg border border-primary/30">
+              <h3 class="text-xl font-xianxia text-primary mb-2">宗门体系</h3>
+              <p class="text-gray-400">加入强大宗门，参与宗门任务，与同门共同成长</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 登录区域 -->
+      <section class="w-full lg:w-1/2 bg-panel p-8 rounded-lg border-2 border-primary xianxia-shadow">
+        <h2 class="text-2xl font-xianxia text-primary mb-6 border-b border-primary pb-3 text-center">修仙之路</h2>
+        
+        <div class="space-y-6">
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <label for="username" class="block text-gray-300 mb-2 font-zhongwen">道号</label>
+              <input type="text" id="username" class="input-field w-full" placeholder="请输入你的道号" required>
+            </div>
+            
+            <div>
+              <label for="password" class="block text-gray-300 mb-2 font-zhongwen">仙途密令</label>
+              <input type="password" id="password" class="input-field w-full" placeholder="请输入你的仙途密令" required>
+            </div>
+            
+            <div class="pt-4">
+              <button type="submit" class="btn w-full py-3 text-lg">开始修仙之旅</button>
+            </div>
+          </form>
+          
+          <div class="text-center text-gray-400">
+            <p class="mb-4">首次踏入仙途？</p>
+            <button id="registerBtn" class="btn-secondary px-6 py-2 rounded">创立新的修仙之路</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 特色玩法 -->
+    <section class="mt-16 bg-panel p-8 rounded-lg border-2 border-primary xianxia-shadow">
+      <h2 class="text-2xl font-xianxia text-primary mb-8 text-center border-b border-primary pb-3">仙途特色</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-dark/70 p-6 rounded-lg border border-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20">
+          <div class="text-4xl text-primary mb-4 text-center">⚔️</div>
+          <h3 class="text-xl font-xianxia text-primary mb-3 text-center">炫酷斗法</h3>
+          <p class="text-gray-400 text-center">释放华丽技能，体验修仙斗法的刺激</p>
+        </div>
+        
+        <div class="bg-dark/70 p-6 rounded-lg border border-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20">
+          <div class="text-4xl text-primary mb-4 text-center">📜</div>
+          <h3 class="text-xl font-xianxia text-primary mb-3 text-center">修仙秘闻</h3>
+          <p class="text-gray-400 text-center">探索隐藏剧情，发现修仙世界的秘密</p>
+        </div>
+        
+        <div class="bg-dark/70 p-6 rounded-lg border border-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20">
+          <div class="text-4xl text-primary mb-4 text-center">🏯</div>
+          <h3 class="text-xl font-xianxia text-primary mb-3 text-center">宗门争霸</h3>
+          <p class="text-gray-400 text-center">参与宗门大战，争夺资源，提升宗门地位</p>
+        </div>
+        
+        <div class="bg-dark/70 p-6 rounded-lg border border-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20">
+          <div class="text-4xl text-primary mb-4 text-center">💎</div>
+          <h3 class="text-xl font-xianxia text-primary mb-3 text-center">修仙交易</h3>
+          <p class="text-gray-400 text-center">自由交易，获取珍稀资源，加速修炼</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="mt-16 footer">
+      <p>© 2023 凡人修仙传网页RPG游戏 - 体验真实的修仙世界</p>
+    </footer>
+  </div>
+
+  <!-- 脚本 -->
+  <script src="game.js"></script>
+  <script>
+    // 背景动画效果
+    function initBackground() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const background = document.getElementById('backgroundAnimation');
+      
+      // 设置canvas大小
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        background.style.backgroundImage = `url(${canvas.toDataURL()})`;
+      }
+      
+      // 创建星空效果
+      function createStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const starsCount = Math.floor(canvas.width * canvas.height / 10000);
+        
+        for (let i = 0; i < starsCount; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          const size = Math.random() * 2;
+          const opacity = Math.random();
+          
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(212, 175, 55, ${opacity})`;
+          ctx.fill();
+        }
+      }
+      
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        createStars();
+      });
+      
+      resizeCanvas();
+      createStars();
+    }
+
+    // 登录表单处理
+    function initLoginForm() {
+      const loginForm = document.getElementById('loginForm');
+      const registerBtn = document.getElementById('registerBtn');
+      
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // 这里可以添加实际的登录逻辑
+        console.log('登录信息:', { username, password });
+        
+        // 模拟登录成功，跳转到角色页面
+        alert('登录成功，开始修仙之旅！');
+        window.location.href = 'character.html';
+      });
+      
+      registerBtn.addEventListener('click', () => {
+        alert('注册功能即将开放，敬请期待！');
+      });
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      // 调用game.js中的通用功能
+      try {
+        // 使用通知系统显示欢迎信息
+        if (window.showNotification) {
+          setTimeout(() => {
+            window.showNotification('欢迎来到修仙世界！', 'success', 5000);
+          }, 1000);
+        }
+      } catch (e) {
+        console.log('游戏功能模块加载中...');
+      }
+      
+      // 原有初始化功能
+      initBackground();
+      initLoginForm();
+    });
+  </script>
+</body>
+</html>

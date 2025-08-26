@@ -1,0 +1,446 @@
+/* 全局样式设置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  background-color: #0d1421;
+  color: #e0e0e0;
+  background-image: url('assets/background.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+/* 东方仙侠风格主题色 */
+:root {
+  --primary-color: #d4af37; /* 金色 */
+  --secondary-color: #b80000; /* 暗红色 */
+  --accent-color: #4dabf7; /* 天蓝色 */
+  --bg-color: #0d1421; /* 深蓝黑色 */
+  --panel-bg: rgba(15, 23, 42, 0.85);
+  --border-color: #d4af37;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+}
+
+/* 容器样式 */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+/* 头部样式 */
+.header {
+  background: var(--panel-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+.header .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-family: "STZhongsong", "SimSun", serif;
+}
+
+/* 导航栏样式 */
+.navbar {
+  background: var(--panel-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.nav-item {
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-family: "STZhongsong", "SimSun", serif;
+  font-size: 1.1rem;
+}
+
+.nav-item:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.nav-item.active {
+  background-color: rgba(212, 175, 55, 0.2);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* 主内容区域样式 */
+.main-content {
+  background: var(--panel-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* 面板样式 */
+.panel {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.panel:hover {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+.panel-title {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+/* 按钮样式 */
+.btn {
+  background: linear-gradient(135deg, var(--primary-color), #e6c666);
+  color: #0d1421;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  font-family: "STZhongsong", "SimSun", serif;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #e6c666, #f0d77a);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #3a4750, #4a5760);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #4a5760, #5a6770);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* 卡片样式 */
+.card {
+  background: rgba(26, 32, 44, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  transition: all 0.3s ease;
+  flex: 1 1 300px;
+  max-width: calc(33.333% - 20px);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+.card-title {
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+.card-content {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 网格布局 */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* 列表样式 */
+.feature-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.feature-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.feature-list li:before {
+  content: "✦";
+  color: var(--primary-color);
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* 输入框样式 */
+.input-field {
+  background: rgba(26, 32, 44, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(77, 171, 247, 0.3);
+}
+
+/* 战斗区域样式 */
+.battle-area {
+  background: rgba(17, 24, 39, 0.95);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.battle-canvas {
+  width: 100%;
+  height: 400px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background: #0d1421;
+}
+
+/* 角色属性面板 */
+.stats-panel {
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.stat-name {
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* 进度条样式 */
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: rgba(26, 32, 44, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+  transition: width 0.5s ease;
+}
+
+/* 页脚样式 */
+.footer {
+  background: var(--panel-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* 动画效果 */
+@keyframes glow {
+  0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+}
+
+.glow-effect {
+  animation: glow 2s infinite;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .card {
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-item {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .card {
+    max-width: 100%;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* 修仙风格装饰 */
+.cultivation-border {
+  position: relative;
+}
+
+.cultivation-border::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, transparent, var(--primary-color), transparent);
+  z-index: -1;
+  border-radius: 15px;
+  opacity: 0.3;
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 技能效果 */
+.skill-icon {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 175, 55, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 10px 10px 0;
+}
+
+.skill-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(26, 32, 44, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e6c666;
+}
+
+/* 加载动画 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.loading::after {
+  content: '';
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--border-color);
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>交易系统 - 凡人修仙传</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#d4af37',
+            secondary: '#b80000',
+            accent: '#4dabf7',
+            dark: '#0d1421'
+          },
+          fontFamily: {
+            xianxia: ['"STKaiti"', '"KaiTi"', 'serif'],
+            zhongwen: ['"STZhongsong"', '"SimSun"', 'serif']
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .xianxia-shadow {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      }
+      .bg-blur {
+        backdrop-filter: blur(10px);
+      }
+      .item-card {
+        transition: all 0.2s ease;
+      }
+      .item-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      }
+      .auction-item {
+        transition: all 0.2s ease;
+      }
+      .auction-item:hover {
+        background-color: rgba(212, 175, 55, 0.05);
+      }
+      .tab-active {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面背景 -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <div id="backgroundAnimation" class="absolute inset-0 bg-dark opacity-95"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-4 relative z-10">
+    <!-- 头部标题 -->
+    <header class="header mb-4">
+      <h1 class="text-3xl font-xianxia text-primary text-center">交易系统</h1>
+      <p class="text-lg text-center text-gray-300 font-zhongwen">魁星岛交易市场</p>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav class="navbar mb-6">
+      <a href="index.html" class="nav-item">首页</a>
+      <a href="character.html" class="nav-item">角色</a>
+      <a href="quest.html" class="nav-item">任务</a>
+      <a href="battle.html" class="nav-item">战斗</a>
+      <a href="market.html" class="nav-item active">交易</a>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <main class="space-y-6">
+      <!-- 交易系统标签页 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <div class="flex border-b border-gray-700 mb-6">
+          <button class="tab-btn tab-active py-3 px-6 font-xianxia text-lg focus:outline-none" data-tab="market">交易市场</button>
+          <button class="tab-btn py-3 px-6 font-xianxia text-lg focus:outline-none" data-tab="auction">拍卖行</button>
+          <button class="tab-btn py-3 px-6 font-xianxia text-lg focus:outline-none" data-tab="stall">个人摊位</button>
+        </div>
+
+        <!-- 市场页面 -->
+        <div class="tab-content" id="market">
+          <!-- 搜索和筛选 -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="md:col-span-1">
+              <input type="text" placeholder="搜索物品名称" class="w-full bg-dark/70 border border-primary/30 rounded-lg px-4 py-2 text-gray-200 focus:outline-none focus:border-primary">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <select class="bg-dark/70 border border-primary/30 rounded-lg px-4 py-2 text-gray-200 focus:outline-none focus:border-primary">
+                <option>所有类别</option>
+                <option>武器</option>
+                <option>防具</option>
+                <option>丹药</option>
+                <option>材料</option>
+                <option>法宝</option>
+                <option>技能书</option>
+              </select>
+              
+              <select class="bg-dark/70 border border-primary/30 rounded-lg px-4 py-2 text-gray-200 focus:outline-none focus:border-primary">
+                <option>所有品质</option>
+                <option>普通</option>
+                <option>优秀</option>
+                <option>精良</option>
+                <option>史诗</option>
+                <option>传说</option>
+              </select>
+            </div>
+            
+            <div class="flex justify-end">
+              <button class="bg-primary hover:bg-primary/80 text-dark font-xianxia py-2 px-6 rounded-lg transition-all">搜索</button>
+            </div>
+          </div>
+
+          <!-- 物品列表 -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <!-- 物品卡片 1 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">⚔️</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">青灵剑</h4>
+                <p class="text-gray-400 text-sm mb-2">练气期上品武器</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">200 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 2 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">💊</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">聚气丹</h4>
+                <p class="text-gray-400 text-sm mb-2">快速恢复法力</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">15 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 3 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">📜</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">火球术</h4>
+                <p class="text-gray-400 text-sm mb-2">低阶攻击法术</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">100 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 4 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">🪨</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">玄铁</h4>
+                <p class="text-gray-400 text-sm mb-2">炼器材料</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">8 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 5 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">🛡️</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">青木盾</h4>
+                <p class="text-gray-400 text-sm mb-2">练气期防御法宝</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">120 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 6 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">🧪</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">培元丹</h4>
+                <p class="text-gray-400 text-sm mb-2">提升修炼速度</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">30 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 7 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">💰</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">中品灵石</h4>
+                <p class="text-gray-400 text-sm mb-2">高级货币</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">100 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 物品卡片 8 -->
+            <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+              <div class="h-32 bg-gray-800 flex items-center justify-center">
+                <span class="text-4xl">🪶</span>
+              </div>
+              <div class="p-3">
+                <h4 class="text-primary font-xianxia mb-1">妖兽皮</h4>
+                <p class="text-gray-400 text-sm mb-2">制衣材料</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-accent">5 下品灵石</span>
+                  <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">购买</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 分页 -->
+          <div class="flex justify-center mt-6">
+            <nav class="inline-flex rounded-md shadow">
+              <a href="#" class="bg-dark/70 text-gray-400 px-4 py-2 rounded-l-md border border-primary/30">上一页</a>
+              <a href="#" class="bg-primary text-dark px-4 py-2 border-t border-b border-primary/30">1</a>
+              <a href="#" class="bg-dark/70 text-gray-300 px-4 py-2 border-t border-b border-primary/30">2</a>
+              <a href="#" class="bg-dark/70 text-gray-300 px-4 py-2 border-t border-b border-primary/30">3</a>
+              <a href="#" class="bg-dark/70 text-gray-300 px-4 py-2 rounded-r-md border border-primary/30">下一页</a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- 拍卖行页面 -->
+        <div class="tab-content hidden" id="auction">
+          <!-- 我的拍卖品 -->
+          <div class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-xl font-xianxia text-primary">我的拍卖品</h3>
+              <button class="bg-primary hover:bg-primary/80 text-dark font-xianxia py-2 px-6 rounded-lg transition-all">上架物品</button>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="border-b border-gray-700">
+                    <th class="pb-3 text-gray-300">物品名称</th>
+                    <th class="pb-3 text-gray-300">当前价格</th>
+                    <th class="pb-3 text-gray-300">结束时间</th>
+                    <th class="pb-3 text-gray-300">状态</th>
+                    <th class="pb-3 text-gray-300">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-gray-700 auction-item">
+                    <td class="py-3"><span class="text-primary">御空飞行符</span></td>
+                    <td class="py-3"><span class="text-accent">150 下品灵石</span></td>
+                    <td class="py-3"><span class="text-gray-400">23:45:30</span></td>
+                    <td class="py-3"><span class="text-green-400">竞拍中</span></td>
+                    <td class="py-3">
+                      <button class="text-gray-400 hover:text-primary mr-3">撤回</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 拍卖品列表 -->
+          <div>
+            <h3 class="text-xl font-xianxia text-primary mb-4">拍卖品列表</h3>
+            
+            <!-- 筛选和排序 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div class="md:col-span-1">
+                <input type="text" placeholder="搜索拍卖物品" class="w-full bg-dark/70 border border-primary/30 rounded-lg px-4 py-2 text-gray-200 focus:outline-none focus:border-primary">
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <select class="bg-dark/70 border border-primary/30 rounded-lg px-4 py-2 text-gray-200 focus:outline-none focus:border-primary">
+                  <option>所有类别</option>
+                  <option>高阶法宝</option>
+                  <option>珍稀材料</option>
+                  <option>顶级丹药</option>
+                  <option>高级技能</option>
+                </select>
+                
+                <select class="bg-dark/70 border border-primary/30 rounded-lg px-4 py-2 text-gray-200 focus:outline-none focus:border-primary">
+                  <option>剩余时间</option>
+                  <option>价格从低到高</option>
+                  <option>价格从高到低</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 拍卖物品列表 -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="border-b border-gray-700">
+                    <th class="pb-3 text-gray-300">物品名称</th>
+                    <th class="pb-3 text-gray-300">物品描述</th>
+                    <th class="pb-3 text-gray-300">起拍价</th>
+                    <th class="pb-3 text-gray-300">当前价</th>
+                    <th class="pb-3 text-gray-300">剩余时间</th>
+                    <th class="pb-3 text-gray-300">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 拍卖物品 1 -->
+                  <tr class="border-b border-gray-700 auction-item">
+                    <td class="py-3"><span class="text-primary">金乌火</span></td>
+                    <td class="py-3"><span class="text-gray-400">珍稀火种，可大幅提升火属性法术威力</span></td>
+                    <td class="py-3"><span class="text-gray-400">500 下品灵石</span></td>
+                    <td class="py-3"><span class="text-accent">750 下品灵石</span></td>
+                    <td class="py-3"><span class="text-gray-400">05:23:12</span></td>
+                    <td class="py-3">
+                      <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">竞拍</button>
+                    </td>
+                  </tr>
+                  
+                  <!-- 拍卖物品 2 -->
+                  <tr class="border-b border-gray-700 auction-item">
+                    <td class="py-3"><span class="text-primary">筑基丹</span></td>
+                    <td class="py-3"><span class="text-gray-400">突破筑基期的必备丹药，成功率提升30%</span></td>
+                    <td class="py-3"><span class="text-gray-400">1000 下品灵石</span></td>
+                    <td class="py-3"><span class="text-accent">1200 下品灵石</span></td>
+                    <td class="py-3"><span class="text-gray-400">12:45:30</span></td>
+                    <td class="py-3">
+                      <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">竞拍</button>
+                    </td>
+                  </tr>
+                  
+                  <!-- 拍卖物品 3 -->
+                  <tr class="border-b border-gray-700 auction-item">
+                    <td class="py-3"><span class="text-primary">青冥剑</span></td>
+                    <td class="py-3"><span class="text-gray-400">筑基期上品飞剑，自带青冥剑气</span></td>
+                    <td class="py-3"><span class="text-gray-400">800 下品灵石</span></td>
+                    <td class="py-3"><span class="text-accent">950 下品灵石</span></td>
+                    <td class="py-3"><span class="text-gray-400">08:15:45</span></td>
+                    <td class="py-3">
+                      <button class="bg-primary hover:bg-primary/80 text-dark text-sm py-1 px-3 rounded">竞拍</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 个人摊位页面 -->
+        <div class="tab-content hidden" id="stall">
+          <!-- 摊位信息 -->
+          <div class="mb-6 p-4 bg-dark/70 rounded-lg border border-primary/30">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+              <div class="mb-4 md:mb-0">
+                <h3 class="text-xl font-xianxia text-primary">韩立的摊位</h3>
+                <p class="text-gray-400 text-sm">摊位等级：1级 | 今日剩余时长：23:45</p>
+              </div>
+              <div class="flex space-x-3">
+                <button class="bg-primary hover:bg-primary/80 text-dark font-xianxia py-2 px-6 rounded-lg transition-all">
+                  管理物品
+                </button>
+                <button class="bg-dark hover:bg-dark/70 text-primary font-xianxia py-2 px-6 rounded-lg transition-all border border-primary/30">
+                  升级摊位
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 摊位物品 -->
+          <div>
+            <h3 class="text-xl font-xianxia text-primary mb-4">摊位物品</h3>
+            
+            <!-- 物品列表 -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <!-- 物品卡片 1 -->
+              <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+                <div class="h-32 bg-gray-800 flex items-center justify-center">
+                  <span class="text-4xl">🌿</span>
+                </div>
+                <div class="p-3">
+                  <h4 class="text-primary font-xianxia mb-1">灵草</h4>
+                  <p class="text-gray-400 text-sm mb-2">一阶灵草</p>
+                  <div class="flex justify-between items-center">
+                    <span class="text-accent">5 下品灵石</span>
+                    <button class="bg-secondary hover:bg-secondary/80 text-white text-sm py-1 px-3 rounded">下架</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 物品卡片 2 -->
+              <div class="item-card bg-dark/70 rounded-lg border border-primary/30 overflow-hidden">
+                <div class="h-32 bg-gray-800 flex items-center justify-center">
+                  <span class="text-4xl">🧪</span>
+                </div>
+                <div class="p-3">
+                  <h4 class="text-primary font-xianxia mb-1">小还丹</h4>
+                  <p class="text-gray-400 text-sm mb-2">恢复生命值</p>
+                  <div class="flex justify-between items-center">
+                    <span class="text-accent">10 下品灵石</span>
+                    <button class="bg-secondary hover:bg-secondary/80 text-white text-sm py-1 px-3 rounded">下架</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 空摊位提示 -->
+            <div class="text-center mt-10 py-10 bg-dark/50 rounded-lg border border-dashed border-gray-700">
+              <p class="text-gray-400">您的摊位还有空位，点击"管理物品"上架更多商品</p>
+            </div>
+
+            <!-- 摊位记录 -->
+            <div class="mt-8">
+              <h3 class="text-xl font-xianxia text-primary mb-4">交易记录</h3>
+              
+              <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                  <thead>
+                    <tr class="border-b border-gray-700">
+                      <th class="pb-3 text-gray-300">物品名称</th>
+                      <th class="pb-3 text-gray-300">价格</th>
+                      <th class="pb-3 text-gray-300">购买者</th>
+                      <th class="pb-3 text-gray-300">时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-700">
+                      <td class="py-3"><span class="text-primary">铁剑</span></td>
+                      <td class="py-3"><span class="text-accent">20 下品灵石</span></td>
+                      <td class="py-3"><span class="text-gray-400">张铁</span></td>
+                      <td class="py-3"><span class="text-gray-400">2023-06-15 12:30</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-700">
+                      <td class="py-3"><span class="text-primary">木盾</span></td>
+                      <td class="py-3"><span class="text-accent">15 下品灵石</span></td>
+                      <td class="py-3"><span class="text-gray-400">王二</span></td>
+                      <td class="py-3"><span class="text-gray-400">2023-06-14 18:45</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 我的资产 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-xl font-xianxia text-primary mb-4">我的资产</h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <!-- 灵石数量 -->
+          <div class="bg-dark/70 rounded-lg border border-primary/30 p-4">
+            <h4 class="text-gray-400 text-sm mb-1">下品灵石</h4>
+            <div class="flex items-center">
+              <span class="text-2xl text-primary font-xianxia mr-2">1500</span>
+              <button class="bg-primary/20 hover:bg-primary/30 text-primary text-sm py-1 px-3 rounded transition-all">
+                充值
+              </button>
+            </div>
+          </div>
+          
+          <!-- 中品灵石 -->
+          <div class="bg-dark/70 rounded-lg border border-primary/30 p-4">
+            <h4 class="text-gray-400 text-sm mb-1">中品灵石</h4>
+            <div class="flex items-center">
+              <span class="text-2xl text-primary font-xianxia mr-2">15</span>
+              <button class="bg-primary/20 hover:bg-primary/30 text-primary text-sm py-1 px-3 rounded transition-all">
+                充值
+              </button>
+            </div>
+          </div>
+          
+          <!-- 上品灵石 -->
+          <div class="bg-dark/70 rounded-lg border border-primary/30 p-4">
+            <h4 class="text-gray-400 text-sm mb-1">上品灵石</h4>
+            <div class="flex items-center">
+              <span class="text-2xl text-primary font-xianxia mr-2">0</span>
+              <button class="bg-primary/20 hover:bg-primary/30 text-primary text-sm py-1 px-3 rounded transition-all">
+                充值
+              </button>
+            </div>
+          </div>
+          
+          <!-- 声望 -->
+          <div class="bg-dark/70 rounded-lg border border-primary/30 p-4">
+            <h4 class="text-gray-400 text-sm mb-1">声望</h4>
+            <div class="flex items-center">
+              <span class="text-2xl text-primary font-xianxia">250</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-10 footer">
+      <p>© 2023 凡人修仙传网页RPG游戏 - 体验真实的修仙世界</p>
+    </footer>
+  </div>
+
+  <!-- 脚本 -->
+  <script src="game.js"></script>
+  <script>
+    // 交易系统相关逻辑
+    document.addEventListener('DOMContentLoaded', () => {
+      // 尝试获取物品管理器和角色管理器
+      let itemManager = null;
+      let characterManager = null;
+      
+      try {
+        // 尝试获取物品管理器（兼容不同的模块加载方式）
+        if (window.ItemManager) {
+          itemManager = new window.ItemManager();
+          console.log('物品管理器初始化成功');
+        } else if (window.require && typeof window.require === 'function') {
+          try {
+            itemManager = window.require('itemManager');
+          } catch (err) {
+            console.warn('通过require加载物品管理器失败:', err);
+          }
+        }
+        
+        // 尝试获取角色管理器
+        if (window.CharacterManager) {
+          characterManager = new window.CharacterManager();
+          console.log('角色管理器初始化成功');
+        } else if (window.require && typeof window.require === 'function') {
+          try {
+            characterManager = window.require('characterManager');
+          } catch (err) {
+            console.warn('通过require加载角色管理器失败:', err);
+          }
+        }
+        
+        console.log('交易系统初始化完成');
+      } catch (e) {
+        console.error('初始化交易系统失败:', e);
+      }
+      
+      // 页面加载完成后，加载市场相关数据
+      try {
+        // 加载市场物品
+        loadMarketItems();
+        
+        // 加载拍卖物品
+        loadAuctionItems();
+        
+        // 加载摊位物品
+        loadStallItems();
+        
+        // 更新资产显示
+        updateAssetsDisplay();
+      } catch (e) {
+        console.error('加载市场数据失败:', e);
+        if (typeof showNotification === 'function') {
+          showNotification('市场数据加载失败，请刷新页面重试', 'error');
+        }
+      }
+      
+      // 标签页切换逻辑
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // 移除所有激活状态
+          tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+          tabContents.forEach(content => content.classList.add('hidden'));
+          
+          // 添加当前激活状态
+          button.classList.add('tab-active');
+          const tabId = button.getAttribute('data-tab');
+          document.getElementById(tabId).classList.remove('hidden');
+        });
+      });
+      
+      // 购买物品逻辑
+      const buyButtons = document.querySelectorAll('.item-card button:not(.bg-secondary)');
+      buyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const itemName = button.closest('.item-card').querySelector('h4').textContent;
+          const priceText = button.closest('.item-card').querySelector('.text-accent').textContent;
+          // 提取价格数字部分
+          const price = parseInt(priceText.match(/\d+/)[0]);
+          
+          if (confirm(`确定要购买${itemName}吗？价格为${priceText}。`)) {
+            // 调用buyItem函数处理购买逻辑
+            buyItem(itemName, price);
+          }
+        });
+      });
+      
+      // 下架物品逻辑
+      const removeButtons = document.querySelectorAll('.item-card button.bg-secondary');
+      removeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const itemName = button.closest('.item-card').querySelector('h4').textContent;
+          
+          if (confirm(`确定要下架${itemName}吗？`)) {
+            // 调用removeItemFromStall函数处理下架逻辑
+            removeItemFromStall(itemName);
+          }
+        });
+      });
+      
+      // 竞拍物品逻辑
+      const auctionButtons = document.querySelectorAll('.auction-item button.bg-primary');
+      auctionButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const itemName = button.closest('.auction-item').querySelector('.text-primary').textContent;
+          const currentPrice = button.closest('.auction-item').querySelector('.text-accent').textContent;
+          const auctionId = button.closest('.auction-item').getAttribute('data-auction-id') || itemName;
+          
+          const bidAmount = prompt(`请输入竞拍价格（当前价格：${currentPrice}）：`);
+          if (bidAmount) {
+            // 简单验证价格格式
+            if (!isNaN(bidAmount) && parseFloat(bidAmount) > 0) {
+              // 调用bidItem函数处理竞拍逻辑
+              bidItem(auctionId, parseFloat(bidAmount));
+            } else {
+              if (typeof showNotification === 'function') {
+                showNotification('请输入有效的价格！', 'error');
+              } else {
+                alert('请输入有效的价格！');
+              }
+            }
+          }
+        });
+      });
+      
+      // 管理物品按钮
+      const manageItemsButton = document.querySelector('.p-4 button:first-child');
+      if (manageItemsButton) {
+        manageItemsButton.addEventListener('click', () => {
+          // 调用manageItems函数处理管理物品逻辑
+          manageItems();
+        });
+      }
+      
+      // 升级摊位按钮
+      const upgradeStallButton = document.querySelector('.p-4 button:last-child');
+      if (upgradeStallButton) {
+        upgradeStallButton.addEventListener('click', () => {
+          // 调用upgradeStall函数处理升级摊位逻辑
+          upgradeStall();
+        });
+      }
+      
+      // 上架物品按钮
+      const addItemButton = document.querySelector('.mb-6 button');
+      if (addItemButton) {
+        addItemButton.addEventListener('click', () => {
+          // 调用addItemToStall函数处理上架物品逻辑
+          addItemToStall();
+        });
+      }
+      
+      // 加载市场物品
+      function loadMarketItems() {
+        if (!itemManager) return;
+        
+        try {
+          const marketItems = itemManager.getMarketItems();
+          // 在实际项目中，这里会根据市场物品数据动态渲染物品列表
+          console.log('加载市场物品:', marketItems);
+          
+          // 如果有通知系统，可以显示加载完成通知
+          if (typeof showNotification === 'function') {
+            showNotification('市场物品加载完成', 'success');
+          }
+        } catch (e) {
+          console.error('加载市场物品失败:', e);
+          if (typeof showNotification === 'function') {
+            showNotification('市场物品加载失败，请稍后重试', 'error');
+          }
+        }
+      }
+
+      // 加载拍卖物品
+      function loadAuctionItems() {
+        if (!itemManager) return;
+        
+        try {
+          const auctionItems = itemManager.getAuctionItems();
+          // 在实际项目中，这里会根据拍卖物品数据动态渲染物品列表
+          console.log('加载拍卖物品:', auctionItems);
+        } catch (e) {
+          console.error('加载拍卖物品失败:', e);
+        }
+      }
+
+      // 加载摊位物品
+      function loadStallItems() {
+        if (!itemManager) return;
+        
+        try {
+          const stallItems = itemManager.getStallItems();
+          // 在实际项目中，这里会根据摊位物品数据动态渲染物品列表
+          console.log('加载摊位物品:', stallItems);
+        } catch (e) {
+          console.error('加载摊位物品失败:', e);
+        }
+      }
+
+      // 更新资产显示
+      function updateAssetsDisplay() {
+        if (!characterManager) return;
+        
+        try {
+          const assets = characterManager.getAssets();
+          // 更新灵石数量显示
+          document.querySelector('.text-primary.font-xianxia.mr-2').textContent = assets.lowGradeSpiritStone || 1500;
+          document.querySelector('.text-xl.text-primary.font-xianxia.mr-2').textContent = assets.midGradeSpiritStone || 15;
+          document.querySelector('.text-2xl.text-primary.font-xianxia').textContent = assets.reputation || 250;
+          
+          console.log('更新资产显示:', assets);
+        } catch (e) {
+          console.error('更新资产显示失败:', e);
+        }
+      }
+
+      // 购买物品
+      function buyItem(itemId, price) {
+        if (!itemManager || !characterManager) {
+          // 模拟购买成功
+          if (typeof showNotification === 'function') {
+            showNotification('购买成功！物品已放入您的背包', 'success');
+          }
+          return true;
+        }
+        
+        try {
+          // 检查是否有足够的灵石
+          const assets = characterManager.getAssets();
+          if (assets.lowGradeSpiritStone < price) {
+            if (typeof showNotification === 'function') {
+              showNotification('灵石不足，无法购买该物品', 'error');
+            }
+            return false;
+          }
+          
+          // 扣除灵石
+          characterManager.spendSpiritStone(price);
+          
+          // 添加物品到背包
+          itemManager.addItemToBag(itemId);
+          
+          // 更新资产显示
+          updateAssetsDisplay();
+          
+          // 显示购买成功通知
+          if (typeof showNotification === 'function') {
+            showNotification('购买成功！物品已放入您的背包', 'success');
+          }
+          
+          return true;
+        } catch (e) {
+          console.error('购买物品失败:', e);
+          if (typeof showNotification === 'function') {
+            showNotification('购买失败，请稍后重试', 'error');
+          }
+          return false;
+        }
+      }
+
+      // 竞拍物品
+       function bidItem(auctionId, bidAmount) {
+         if (!itemManager || !characterManager) {
+           // 模拟竞拍成功
+           if (typeof showNotification === 'function') {
+             showNotification(`竞拍成功！您已出价${bidAmount}下品灵石`, 'success');
+           }
+           return true;
+         }
+         
+         try {
+           // 检查是否有足够的灵石
+           const assets = characterManager.getAssets();
+           if (assets.lowGradeSpiritStone < bidAmount) {
+             if (typeof showNotification === 'function') {
+               showNotification('灵石不足，无法参与竞拍', 'error');
+             }
+             return false;
+           }
+           
+           // 参与竞拍
+           itemManager.placeBid(auctionId, bidAmount);
+           
+           // 显示竞拍成功通知
+           if (typeof showNotification === 'function') {
+             showNotification(`竞拍成功！您已出价${bidAmount}下品灵石`, 'success');
+           }
+           
+           return true;
+         } catch (e) {
+           console.error('竞拍物品失败:', e);
+           if (typeof showNotification === 'function') {
+             showNotification('竞拍失败，请稍后重试', 'error');
+           }
+           return false;
+         }
+       }
+
+       // 下架物品
+       function removeItemFromStall(itemName) {
+         if (!itemManager) {
+           // 模拟下架成功
+           if (typeof showNotification === 'function') {
+             showNotification(`物品${itemName}已下架！`, 'success');
+           } else {
+             alert(`物品${itemName}已下架！`);
+           }
+           return true;
+         }
+         
+         try {
+           // 从摊位移除物品并返回背包
+           itemManager.removeItemFromStall(itemName);
+           
+           // 显示下架成功通知
+           if (typeof showNotification === 'function') {
+             showNotification(`物品${itemName}已下架并返回您的背包！`, 'success');
+           }
+           
+           // 重新加载摊位物品列表
+           loadStallItems();
+           
+           return true;
+         } catch (e) {
+           console.error('下架物品失败:', e);
+           if (typeof showNotification === 'function') {
+             showNotification(`下架物品失败，请稍后重试`, 'error');
+           }
+           return false;
+         }
+       }
+
+       // 管理物品
+       function manageItems() {
+         if (!itemManager) {
+           // 模拟管理功能
+           if (typeof showNotification === 'function') {
+             showNotification('物品管理系统正在加载...', 'info');
+           } else {
+             alert('物品管理系统正在开发中');
+           }
+           return;
+         }
+         
+         try {
+           // 在实际项目中，这里会打开物品管理界面
+           console.log('打开物品管理界面');
+           
+           if (typeof showNotification === 'function') {
+             showNotification('物品管理系统开发中...', 'info');
+           }
+         } catch (e) {
+           console.error('打开物品管理失败:', e);
+           if (typeof showNotification === 'function') {
+             showNotification('打开物品管理失败，请稍后重试', 'error');
+           }
+         }
+       }
+
+       // 升级摊位
+       function upgradeStall() {
+         if (!itemManager || !characterManager) {
+           // 模拟升级功能
+           if (typeof showNotification === 'function') {
+             showNotification('摊位升级功能正在开发中...', 'info');
+           } else {
+             alert('摊位升级功能正在开发中');
+           }
+           return;
+         }
+         
+         try {
+           // 检查是否有足够的资源升级摊位
+           const assets = characterManager.getAssets();
+           const upgradeCost = 1000; // 假设升级成本为1000下品灵石
+           
+           if (assets.lowGradeSpiritStone < upgradeCost) {
+             if (typeof showNotification === 'function') {
+               showNotification('灵石不足，无法升级摊位（需要1000下品灵石）', 'error');
+             }
+             return;
+           }
+           
+           // 询问是否确定升级
+           if (!confirm(`确定要升级摊位吗？需要花费${upgradeCost}下品灵石。`)) {
+             return;
+           }
+           
+           // 扣除资源
+           characterManager.spendSpiritStone(upgradeCost);
+           
+           // 升级摊位
+           itemManager.upgradeStall();
+           
+           // 更新资产显示
+           updateAssetsDisplay();
+           
+           // 显示升级成功通知
+           if (typeof showNotification === 'function') {
+             showNotification('摊位升级成功！现在您可以上架更多物品了！', 'success');
+           }
+         } catch (e) {
+           console.error('升级摊位失败:', e);
+           if (typeof showNotification === 'function') {
+             showNotification('升级摊位失败，请稍后重试', 'error');
+           }
+         }
+       }
+
+       // 上架物品
+       function addItemToStall() {
+         if (!itemManager) {
+           // 模拟上架功能
+           if (typeof showNotification === 'function') {
+             showNotification('物品上架功能正在开发中...', 'info');
+           } else {
+             alert('物品上架功能正在开发中');
+           }
+           return;
+         }
+         
+         try {
+           // 在实际项目中，这里会打开物品上架界面
+           console.log('打开物品上架界面');
+           
+           if (typeof showNotification === 'function') {
+             showNotification('物品上架系统开发中...', 'info');
+           }
+         } catch (e) {
+           console.error('打开物品上架失败:', e);
+           if (typeof showNotification === 'function') {
+             showNotification('打开物品上架失败，请稍后重试', 'error');
+           }
+         }
+       }
+    });
+  </script>
+</body>
+</html>

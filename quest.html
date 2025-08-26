@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务与副本 - 凡人修仙传</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#d4af37',
+            secondary: '#b80000',
+            accent: '#4dabf7',
+            dark: '#0d1421'
+          },
+          fontFamily: {
+            xianxia: ['"STKaiti"', '"KaiTi"', 'serif'],
+            zhongwen: ['"STZhongsong"', '"SimSun"', 'serif']
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .xianxia-shadow {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      }
+      .bg-blur {
+        backdrop-filter: blur(10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面背景 -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <div id="backgroundAnimation" class="absolute inset-0 bg-dark opacity-90"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8 relative z-10">
+    <!-- 头部标题 -->
+    <header class="header mb-10">
+      <h1 class="text-4xl font-xianxia text-primary text-center">任务与副本</h1>
+      <p class="text-lg text-center text-gray-300 font-zhongwen">修仙之路，历练成长</p>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav class="navbar mb-10">
+      <a href="index.html" class="nav-item">首页</a>
+      <a href="character.html" class="nav-item">角色</a>
+      <a href="quest.html" class="nav-item active">任务</a>
+      <a href="battle.html" class="nav-item">战斗</a>
+      <a href="market.html" class="nav-item">交易</a>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <main class="space-y-10">
+      <!-- 任务系统 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-6 border-b border-primary pb-2">任务系统</h3>
+        
+        <!-- 任务标签页 -->
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button class="quest-tab active px-4 py-2 rounded bg-primary/20 text-primary border border-primary">主线任务</button>
+          <button class="quest-tab px-4 py-2 rounded bg-dark/50 text-gray-300 border border-gray-700">支线任务</button>
+          <button class="quest-tab px-4 py-2 rounded bg-dark/50 text-gray-300 border border-gray-700">日常任务</button>
+          <button class="quest-tab px-4 py-2 rounded bg-dark/50 text-gray-300 border border-gray-700">宗门任务</button>
+        </div>
+
+        <!-- 任务列表 -->
+        <div class="space-y-4">
+          <!-- 主线任务 -->
+          <div class="main-quest bg-dark/70 p-4 rounded-lg border border-primary/30 cursor-pointer hover:border-primary transition-all">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="text-xl font-xianxia text-primary">初入仙途</h4>
+              <span class="text-accent px-2 py-1 bg-accent/20 rounded text-sm">进行中</span>
+            </div>
+            <p class="text-gray-400 mb-3">前往青牛镇寻找药老，他会指引你修仙之路的第一步。</p>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">推荐等级: 练气期一层</span>
+              <span class="text-gray-300">奖励: 聚气丹 x2, 下品灵石 x50</span>
+              <button class="btn-secondary px-3 py-1 rounded text-xs">前往完成</button>
+            </div>
+          </div>
+
+          <div class="main-quest bg-dark/70 p-4 rounded-lg border border-primary/30 cursor-pointer hover:border-primary transition-all">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="text-xl font-xianxia text-primary">灵根测试</h4>
+              <span class="text-accent px-2 py-1 bg-accent/20 rounded text-sm">进行中</span>
+            </div>
+            <p class="text-gray-400 mb-3">前往七玄门参加灵根测试，只有拥有灵根的人才能真正踏上修仙之路。</p>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">推荐等级: 练气期三层</span>
+              <span class="text-gray-300">奖励: 基础法术卷轴, 下品灵石 x100</span>
+              <button class="btn-secondary px-3 py-1 rounded text-xs">前往完成</button>
+            </div>
+          </div>
+
+          <div class="main-quest bg-dark/50 p-4 rounded-lg border border-gray-700 cursor-pointer opacity-70">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="text-xl font-xianxia text-gray-400">九牛二虎之力</h4>
+              <span class="text-gray-500 px-2 py-1 bg-gray-800/50 rounded text-sm">未解锁</span>
+            </div>
+            <p class="text-gray-500 mb-3">通过七玄门的考验，获得进入内门的资格。</p>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-500">推荐等级: 练气期五层</span>
+              <span class="text-gray-500">奖励: 七玄门弟子服, 下品灵石 x200</span>
+              <button class="bg-gray-800/50 text-gray-500 px-3 py-1 rounded text-xs cursor-not-allowed">条件不足</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 副本系统 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-6 border-b border-primary pb-2">副本系统</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- 普通副本 -->
+          <div class="dungeon-card bg-dark/70 p-5 rounded-lg border border-primary/30 transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-primary/20">
+            <div class="flex justify-between items-start mb-4">
+              <h4 class="text-xl font-xianxia text-primary">青牛镇妖洞</h4>
+              <span class="text-accent bg-accent/20 px-2 py-1 rounded text-sm">可挑战</span>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-400 mb-2">青牛镇附近出现妖洞，常有妖兽出没危害百姓。</p>
+              <div class="text-sm text-gray-300 space-y-1">
+                <div class="flex justify-between">
+                  <span>推荐等级:</span>
+                  <span>练气期一层 - 三层</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>挑战次数:</span>
+                  <span>每日 5 次</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>主要掉落:</span>
+                  <span>下品灵石、基础丹药</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <button class="btn w-full py-2">挑战副本</button>
+            </div>
+          </div>
+
+          <!-- 中级副本 -->
+          <div class="dungeon-card bg-dark/70 p-5 rounded-lg border border-primary/30 transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-primary/20">
+            <div class="flex justify-between items-start mb-4">
+              <h4 class="text-xl font-xianxia text-primary">黑风山脉</h4>
+              <span class="text-accent bg-accent/20 px-2 py-1 rounded text-sm">可挑战</span>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-400 mb-2">黑风山脉中有众多妖兽栖息，是修炼者历练的好去处。</p>
+              <div class="text-sm text-gray-300 space-y-1">
+                <div class="flex justify-between">
+                  <span>推荐等级:</span>
+                  <span>练气期四层 - 六层</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>挑战次数:</span>
+                  <span>每日 3 次</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>主要掉落:</span>
+                  <span>中品灵石、进阶装备</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <button class="btn w-full py-2">挑战副本</button>
+            </div>
+          </div>
+
+          <!-- 高级副本 (未解锁) -->
+          <div class="dungeon-card bg-dark/50 p-5 rounded-lg border border-gray-700 opacity-70">
+            <div class="flex justify-between items-start mb-4">
+              <h4 class="text-xl font-xianxia text-gray-400">七玄秘境</h4>
+              <span class="text-gray-500 bg-gray-800/50 px-2 py-1 rounded text-sm">未解锁</span>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-500 mb-2">七玄门的隐秘秘境，传说中藏有上古传承。</p>
+              <div class="text-sm text-gray-500 space-y-1">
+                <div class="flex justify-between">
+                  <span>推荐等级:</span>
+                  <span>筑基期以上</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>挑战次数:</span>
+                  <span>每周 2 次</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>主要掉落:</span>
+                  <span>上品灵石、稀有法宝</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <button class="bg-gray-800/50 text-gray-500 py-2 w-full rounded cursor-not-allowed">条件不足</button>
+            </div>
+          </div>
+
+          <!-- 特殊副本 (活动) -->
+          <div class="dungeon-card bg-dark/70 p-5 rounded-lg border border-secondary/50 transition-all duration-300 hover:scale-102 hover:shadow-lg hover:shadow-secondary/30">
+            <div class="flex justify-between items-start mb-4">
+              <h4 class="text-xl font-xianxia text-secondary">血灵洞</h4>
+              <span class="text-secondary bg-secondary/20 px-2 py-1 rounded text-sm">限时活动</span>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-400 mb-2">百年一现的血灵洞，蕴含着强大的血灵力，但也危机四伏。</p>
+              <div class="text-sm text-gray-300 space-y-1">
+                <div class="flex justify-between">
+                  <span>推荐等级:</span>
+                  <span>练气期七层以上</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>剩余时间:</span>
+                  <span class="text-secondary">2天 12小时</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>主要掉落:</span>
+                  <span>血灵珠、稀有材料</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <button class="btn-secondary w-full py-2">挑战活动</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 奇遇系统 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-6 border-b border-primary pb-2">奇遇系统</h3>
+        
+        <div class="space-y-6">
+          <!-- 奇遇面板 -->
+          <div class="bg-dark/70 p-5 rounded-lg border border-accent/30">
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="text-xl font-xianxia text-accent">当前奇遇</h4>
+              <span class="text-gray-300 text-sm">今日剩余: 2次</span>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+              <div class="w-full md:w-1/3">
+                <div class="relative cultivation-border aspect-square rounded-lg overflow-hidden">
+                  <div class="absolute inset-0 bg-cover bg-center opacity-80" style="background-image: url('assets/adventure-placeholder.png');"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                  <div class="absolute bottom-4 left-0 right-0 text-center">
+                    <h5 class="text-xl font-xianxia text-primary">神秘老人</h5>
+                    <p class="text-accent">随机出现的奇遇</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="w-full md:w-2/3">
+                <p class="text-gray-400 mb-4">
+                  你在青牛镇郊外遇到一位神秘老人，他似乎对你手中的某个物品感兴趣...
+                </p>
+                <div class="flex flex-wrap gap-3">
+                  <button class="btn px-6 py-2">上前攀谈</button>
+                  <button class="btn-secondary px-6 py-2">继续观察</button>
+                  <button class="bg-dark/50 text-gray-300 border border-gray-700 px-6 py-2 rounded">离开</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 奇遇记录 -->
+          <div>
+            <h4 class="text-xl font-xianxia text-primary mb-4">奇遇记录</h4>
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-dark/50 rounded-lg border border-gray-700">
+                <div class="w-10 h-10 mr-3 bg-primary/20 rounded-full flex items-center justify-center">
+                  <span class="text-primary">📜</span>
+                </div>
+                <div class="flex-1">
+                  <h5 class="text-gray-300">神秘洞穴</h5>
+                  <p class="text-sm text-gray-400">你发现了一个隐藏的洞穴，从中获得了一些修炼资源。</p>
+                </div>
+                <span class="text-gray-500 text-sm">昨天</span>
+              </div>
+              
+              <div class="flex items-center p-3 bg-dark/50 rounded-lg border border-gray-700">
+                <div class="w-10 h-10 mr-3 bg-primary/20 rounded-full flex items-center justify-center">
+                  <span class="text-primary">👨‍🏫</span>
+                </div>
+                <div class="flex-1">
+                  <h5 class="text-gray-300">高人指点</h5>
+                  <p class="text-sm text-gray-400">一位路过的修仙者传授了你一些修炼心得。</p>
+                </div>
+                <span class="text-gray-500 text-sm">3天前</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 任务追踪 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-2xl font-xianxia text-primary mb-6 border-b border-primary pb-2">任务追踪</h3>
+        
+        <div class="space-y-4">
+          <div class="flex items-center p-4 bg-dark/70 rounded-lg border border-primary/30">
+            <div class="w-12 h-12 mr-4 bg-primary/20 rounded-full flex items-center justify-center">
+              <span class="text-primary">📜</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="text-lg font-xianxia text-primary mb-1">初入仙途</h4>
+              <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-400">前往青牛镇寻找药老</p>
+                <button class="btn-secondary px-4 py-1 rounded text-sm">追踪</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-dark/70 rounded-lg border border-primary/30">
+            <div class="w-12 h-12 mr-4 bg-primary/20 rounded-full flex items-center justify-center">
+              <span class="text-primary">📜</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="text-lg font-xianxia text-primary mb-1">灵根测试</h4>
+              <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-400">前往七玄门参加灵根测试</p>
+                <button class="btn-secondary px-4 py-1 rounded text-sm">追踪</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-16 footer">
+      <p>© 2023 凡人修仙传网页RPG游戏 - 体验真实的修仙世界</p>
+    </footer>
+  </div>
+
+  <!-- 脚本 -->
+  <script src="game.js"></script>
+  <script>
+    // 任务与副本系统相关逻辑
+    document.addEventListener('DOMContentLoaded', () => {
+      // 尝试获取任务管理器
+      let questManager;
+      try {
+        questManager = window.require ? window.require('questManager') : null;
+        
+        // 如果有任务管理器，则加载任务列表
+        if (questManager) {
+          // 初始化主任务列表
+          loadQuestList('main');
+          // 初始化支线任务列表
+          loadQuestList('side');
+          // 初始化日常任务列表
+          loadQuestList('daily');
+        }
+      } catch (e) {
+        console.log('任务系统模块加载中...');
+      }
+      
+      // 监听任务进度更新事件
+      document.addEventListener('questProgressUpdated', (e) => {
+        updateQuestProgress(e.detail);
+      });
+      
+      // 监听任务完成事件
+      document.addEventListener('questCompleted', (e) => {
+        showQuestCompletedNotification(e.detail);
+      });
+      // 任务标签页切换
+      const questTabs = document.querySelectorAll('.quest-tab');
+      questTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // 移除所有标签的激活状态
+          questTabs.forEach(t => {
+            t.classList.remove('active', 'bg-primary/20', 'text-primary', 'border-primary');
+            t.classList.add('bg-dark/50', 'text-gray-300', 'border-gray-700');
+          });
+          
+          // 添加当前标签的激活状态
+          tab.classList.add('active', 'bg-primary/20', 'text-primary', 'border-primary');
+          tab.classList.remove('bg-dark/50', 'text-gray-300', 'border-gray-700');
+          
+          // 这里可以添加加载不同任务列表的逻辑
+          console.log('切换到任务标签:', tab.textContent.trim());
+        });
+      });
+
+      // 挑战副本按钮点击事件
+      const challengeButtons = document.querySelectorAll('.btn:not([disabled]):not(.cursor-not-allowed)');
+      challengeButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          // 阻止事件冒泡
+          e.stopPropagation();
+          
+          // 获取副本信息
+          const dungeonCard = button.closest('.dungeon-card');
+          const dungeonName = dungeonCard.querySelector('h4').textContent;
+          
+          // 模拟进入副本
+          alert(`正在进入副本: ${dungeonName}...`);
+          // 实际项目中这里会跳转到战斗页面或加载副本场景
+          setTimeout(() => {
+            window.location.href = 'battle.html';
+          }, 1500);
+        });
+      });
+
+      // 任务卡片点击事件
+      const questCards = document.querySelectorAll('.main-quest:not(.opacity-70)');
+      questCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const questName = card.querySelector('h4').textContent;
+          alert(`查看任务详情: ${questName}`);
+          // 实际项目中这里会显示详细的任务信息面板
+        });
+      });
+
+      // 奇遇选项点击事件
+      const adventureOptions = document.querySelectorAll('#adventureOptions button');
+      if (adventureOptions.length > 0) {
+        adventureOptions.forEach(option => {
+          option.addEventListener('click', () => {
+            const optionText = option.textContent.trim();
+            console.log('选择奇遇选项:', optionText);
+            // 实际项目中这里会处理不同选项的结果
+          });
+        });
+      }
+    });
+
+    // 加载任务列表
+    function loadQuestList(type) {
+      if (!questManager) return;
+      
+      try {
+        const quests = questManager.getQuestsByType(type);
+        // 在实际项目中，这里会根据任务数据动态渲染任务列表
+        console.log(`加载${getQuestTypeText(type)}列表:`, quests);
+        
+        // 如果任务管理器中有通知系统，也可以发送加载完成的通知
+        if (typeof showNotification === 'function') {
+          showNotification(`已加载${getQuestTypeText(type)}列表`, 'success');
+        }
+      } catch (e) {
+        console.error(`加载${getQuestTypeText(type)}列表失败:`, e);
+        if (typeof showNotification === 'function') {
+          showNotification(`加载任务列表失败，请稍后重试`, 'error');
+        }
+      }
+    }
+
+    // 更新任务进度
+    function updateQuestProgress(detail) {
+      const { questId, progress, total } = detail;
+      
+      // 在实际项目中，这里会根据任务ID找到对应的任务元素并更新进度显示
+      console.log(`任务进度更新 - ID: ${questId}, 进度: ${progress}/${total}`);
+      
+      // 如果有任务追踪面板，可以同时更新追踪信息
+      updateQuestTracker();
+    }
+
+    // 显示任务完成通知
+    function showQuestCompletedNotification(detail) {
+      const { questName, rewards } = detail;
+      
+      // 格式化奖励信息
+      let rewardText = '';
+      if (rewards) {
+        rewardText = rewards.map(reward => `${reward.name} x${reward.count}`).join(', ');
+      }
+      
+      // 使用通知系统显示任务完成信息
+      if (typeof showNotification === 'function') {
+        showNotification(`恭喜完成任务：${questName}\n获得奖励：${rewardText}`, 'success');
+      } else {
+        alert(`任务完成：${questName}\n获得奖励：${rewardText}`);
+      }
+      
+      // 更新任务列表
+      if (questManager) {
+        // 重新加载相关任务列表
+        loadQuestList('main');
+        loadQuestList('side');
+        loadQuestList('daily');
+      }
+    }
+
+    // 更新任务追踪面板
+    function updateQuestTracker() {
+      if (!questManager) return;
+      
+      try {
+        const trackedQuests = questManager.getTrackedQuests();
+        // 在实际项目中，这里会动态更新任务追踪面板的内容
+        console.log('更新任务追踪:', trackedQuests);
+      } catch (e) {
+        console.error('更新任务追踪失败:', e);
+      }
+    }
+
+    // 获取任务类型文本
+    function getQuestTypeText(type) {
+      const typeMap = {
+        'main': '主线任务',
+        'side': '支线任务',
+        'daily': '日常任务',
+        'clan': '宗门任务'
+      };
+      
+      return typeMap[type] || type;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>战斗系统 - 凡人修仙传</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#d4af37',
+            secondary: '#b80000',
+            accent: '#4dabf7',
+            dark: '#0d1421'
+          },
+          fontFamily: {
+            xianxia: ['"STKaiti"', '"KaiTi"', 'serif'],
+            zhongwen: ['"STZhongsong"', '"SimSun"', 'serif']
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .xianxia-shadow {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      }
+      .bg-blur {
+        backdrop-filter: blur(10px);
+      }
+      .combat-action-btn {
+        transition: all 0.2s ease;
+      }
+      .combat-action-btn:active {
+        transform: scale(0.95);
+      }
+      .combat-action-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .health-bar-enemy .progress-fill {
+        background: linear-gradient(90deg, var(--secondary-color), #e63946);
+      }
+      .combat-log {
+        max-height: 150px;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面背景 -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <div id="backgroundAnimation" class="absolute inset-0 bg-dark opacity-95"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-4 relative z-10">
+    <!-- 头部标题 -->
+    <header class="header mb-4">
+      <h1 class="text-3xl font-xianxia text-primary text-center">战斗系统</h1>
+      <p class="text-lg text-center text-gray-300 font-zhongwen">青牛镇妖洞 - 第一层</p>
+    </header>
+
+    <!-- 导航栏 -->
+    <nav class="navbar mb-6">
+      <a href="index.html" class="nav-item">首页</a>
+      <a href="character.html" class="nav-item">角色</a>
+      <a href="quest.html" class="nav-item">任务</a>
+      <a href="battle.html" class="nav-item active">战斗</a>
+      <a href="market.html" class="nav-item">交易</a>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <main class="space-y-6">
+      <!-- 战斗区域 -->
+      <section class="battle-area relative">
+        <!-- 战斗背景 -->
+        <div class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image: url('assets/battle-bg-placeholder.png');"></div>
+        
+        <!-- 战斗舞台 -->
+        <div class="relative h-[500px] flex items-center justify-between px-8">
+          <!-- 玩家角色 -->
+          <div class="player-character w-1/4 flex flex-col items-center">
+            <!-- 角色头像 -->
+            <div class="relative mb-4">
+              <div class="w-32 h-32 rounded-full border-4 border-primary overflow-hidden">
+                <img src="assets/character-placeholder.png" alt="角色" class="w-full h-full object-cover">
+              </div>
+              <!-- 角色名称 -->
+              <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-dark/80 px-3 py-1 rounded-full border border-primary">
+                <span class="text-primary font-xianxia">韩立</span>
+              </div>
+              <!-- 角色境界 -->
+              <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-dark/80 px-3 py-1 rounded-full border border-accent">
+                <span class="text-accent text-sm">练气期九层</span>
+              </div>
+            </div>
+            
+            <!-- 角色血条 -->
+            <div class="w-48">
+              <div class="flex justify-between mb-1 text-sm">
+                <span class="text-gray-300">生命</span>
+                <span class="text-primary">1500/1500</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+            
+            <!-- 角色法力条 -->
+            <div class="w-48 mt-2">
+              <div class="flex justify-between mb-1 text-sm">
+                <span class="text-gray-300">法力</span>
+                <span class="text-accent">1200/1200</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%; background: linear-gradient(90deg, var(--accent-color), #3a86ff);"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 敌人角色 -->
+          <div class="enemy-character w-1/4 flex flex-col items-center">
+            <!-- 敌人头像 -->
+            <div class="relative mb-4">
+              <div class="w-36 h-36 rounded-full border-4 border-secondary overflow-hidden">
+                <img src="assets/enemy-placeholder.png" alt="敌人" class="w-full h-full object-cover">
+              </div>
+              <!-- 敌人名称 -->
+              <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-dark/80 px-3 py-1 rounded-full border border-secondary">
+                <span class="text-secondary font-xianxia">青牛妖</span>
+              </div>
+              <!-- 敌人等级 -->
+              <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-dark/80 px-3 py-1 rounded-full border border-secondary">
+                <span class="text-secondary text-sm">练气期七层</span>
+              </div>
+            </div>
+            
+            <!-- 敌人血条 -->
+            <div class="w-48">
+              <div class="flex justify-between mb-1 text-sm">
+                <span class="text-gray-300">生命</span>
+                <span class="text-secondary">2000/2000</span>
+              </div>
+              <div class="progress-bar health-bar-enemy">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 战斗操作区 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-xl font-xianxia text-primary mb-4">战斗操作</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- 技能区 -->
+          <div class="md:col-span-2">
+            <h4 class="text-lg font-xianxia text-accent mb-3">技能</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <button class="combat-action-btn bg-dark/70 p-4 rounded-lg border border-primary hover:border-accent transition-all flex flex-col items-center">
+                <span class="text-2xl mb-2">⚡</span>
+                <span class="text-gray-300 text-sm">雷灵术</span>
+                <span class="text-accent text-xs">80法力</span>
+              </button>
+              
+              <button class="combat-action-btn bg-dark/70 p-4 rounded-lg border border-primary hover:border-accent transition-all flex flex-col items-center">
+                <span class="text-2xl mb-2">🔥</span>
+                <span class="text-gray-300 text-sm">火球术</span>
+                <span class="text-accent text-xs">60法力</span>
+              </button>
+              
+              <button class="combat-action-btn bg-dark/70 p-4 rounded-lg border border-primary hover:border-accent transition-all flex flex-col items-center">
+                <span class="text-2xl mb-2">💧</span>
+                <span class="text-gray-300 text-sm">水幕天华</span>
+                <span class="text-accent text-xs">50法力</span>
+              </button>
+              
+              <button class="combat-action-btn bg-dark/70 p-4 rounded-lg border border-primary hover:border-accent transition-all flex flex-col items-center">
+                <span class="text-2xl mb-2">🌪️</span>
+                <span class="text-gray-300 text-sm">风刃术</span>
+                <span class="text-accent text-xs">70法力</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 物品与逃跑 -->
+          <div>
+            <h4 class="text-lg font-xianxia text-accent mb-3">其他操作</h4>
+            <div class="grid grid-cols-2 gap-3">
+              <button class="combat-action-btn bg-dark/70 p-3 rounded-lg border border-accent hover:bg-accent/20 transition-all flex flex-col items-center">
+                <span class="text-2xl mb-1">💊</span>
+                <span class="text-gray-300 text-sm">使用药品</span>
+              </button>
+              
+              <button class="combat-action-btn bg-dark/70 p-3 rounded-lg border border-accent hover:bg-accent/20 transition-all flex flex-col items-center">
+                <span class="text-2xl mb-1">🎒</span>
+                <span class="text-gray-300 text-sm">打开背包</span>
+              </button>
+              
+              <button class="combat-action-btn bg-dark/70 p-3 rounded-lg border border-accent hover:bg-accent/20 transition-all flex flex-col items-center">
+                <span class="text-2xl mb-1">🛡️</span>
+                <span class="text-gray-300 text-sm">防御</span>
+              </button>
+              
+              <button class="combat-action-btn bg-dark/70 p-3 rounded-lg border border-secondary hover:bg-secondary/20 transition-all flex flex-col items-center">
+                <span class="text-2xl mb-1">🏃</span>
+                <span class="text-gray-300 text-sm">逃跑</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 战斗信息与日志 -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 战斗信息 -->
+        <div class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+          <h3 class="text-xl font-xianxia text-primary mb-4">战斗信息</h3>
+          
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-gray-300">当前回合:</span>
+              <span class="text-primary">第 1 回合</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <span class="text-gray-300">战斗状态:</span>
+              <span class="text-accent">进行中</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <span class="text-gray-300">敌方数量:</span>
+              <span class="text-primary">1 个</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <span class="text-gray-300">胜利条件:</span>
+              <span class="text-primary">击败所有敌人</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <span class="text-gray-300">失败条件:</span>
+              <span class="text-secondary">角色死亡</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 战斗日志 -->
+        <div class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+          <h3 class="text-xl font-xianxia text-primary mb-4">战斗日志</h3>
+          
+          <div class="combat-log space-y-2 bg-dark/50 p-3 rounded-lg border border-gray-700">
+            <div class="text-gray-300 text-sm">战斗开始！</div>
+            <div class="text-gray-400 text-sm">你遇到了一只青牛妖！</div>
+            <div class="text-gray-400 text-sm">青牛妖正怒视着你，准备发起攻击...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 战斗奖励预览 -->
+      <section class="bg-panel p-6 rounded-lg border-2 border-primary xianxia-shadow">
+        <h3 class="text-xl font-xianxia text-primary mb-4">胜利奖励预览</h3>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">💰</span>
+            <p class="text-xs text-gray-300">下品灵石</p>
+            <p class="text-xs text-primary">x50</p>
+          </div>
+          
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">💊</span>
+            <p class="text-xs text-gray-300">聚气丹</p>
+            <p class="text-xs text-primary">x2</p>
+          </div>
+          
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">🪨</span>
+            <p class="text-xs text-gray-300">玄铁</p>
+            <p class="text-xs text-primary">x3</p>
+          </div>
+          
+          <div class="bg-dark/70 p-3 rounded-lg border border-primary/30 aspect-square flex flex-col items-center justify-center text-center hover:border-primary transition-all">
+            <span class="text-2xl mb-1">📜</span>
+            <p class="text-xs text-gray-300">低阶妖丹</p>
+            <p class="text-xs text-primary">x1</p>
+          </div>
+          
+          <div class="bg-dark/50 p-3 rounded-lg border border-gray-700 aspect-square flex flex-col items-center justify-center text-center">
+            <span class="text-xl mb-1 text-gray-500">❓</span>
+            <p class="text-xs text-gray-500">随机奖励</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-10 footer">
+      <p>© 2023 凡人修仙传网页RPG游戏 - 体验真实的修仙世界</p>
+    </footer>
+  </div>
+
+  <!-- 脚本 -->
+  <script src="game.js"></script>
+  <script>
+    // 战斗系统相关逻辑
+    document.addEventListener('DOMContentLoaded', () => {
+      // 尝试获取角色管理器和战斗管理器
+      let characterManager;
+      let battleManager;
+      
+      try {
+        characterManager = window.require ? window.require('characterManager') : null;
+        battleManager = window.require ? window.require('battleManager') : null;
+        
+        // 如果有角色管理器，则使用角色的实际属性
+        if (characterManager) {
+          const playerData = characterManager.getPlayerCharacter();
+          console.log('玩家角色数据:', playerData);
+          
+          // 初始化战斗系统
+          initBattleSystem(playerData);
+        } else {
+          // 没有角色管理器时使用默认值
+          initBattleSystemWithDefaults();
+        }
+      } catch (e) {
+        console.log('战斗系统模块加载中...', e);
+        initBattleSystemWithDefaults();
+      }
+      
+      // 技能按钮点击事件
+      const skillButtons = document.querySelectorAll('.combat-action-btn:not(.disabled)');
+      let currentRound = 1;
+      let playerHealth = 1500;
+      let playerMana = 1200;
+      let enemyHealth = 2000;
+      let playerData = { name: '韩立', level: 5, cultivation: '练气期五层' };
+      
+      // 更新战斗信息
+      function updateBattleInfo() {
+        document.querySelector('.text-primary:contains("第")').textContent = `第 ${currentRound} 回合`;
+        
+        // 更新角色血条和法力条
+        const playerHealthBar = document.querySelector('.player-character .progress-bar:first-child .progress-fill');
+        const playerManaBar = document.querySelector('.player-character .progress-bar:last-child .progress-fill');
+        const enemyHealthBar = document.querySelector('.enemy-character .progress-bar .progress-fill');
+        
+        playerHealthBar.style.width = `${(playerHealth / 1500) * 100}%`;
+        playerManaBar.style.width = `${(playerMana / 1200) * 100}%`;
+        enemyHealthBar.style.width = `${(enemyHealth / 2000) * 100}%`;
+        
+        // 更新数值显示
+        playerHealthBar.parentNode.previousElementSibling.querySelector('.text-primary').textContent = `${playerHealth}/1500`;
+        playerManaBar.parentNode.previousElementSibling.querySelector('.text-accent').textContent = `${playerMana}/1200`;
+        enemyHealthBar.parentNode.previousElementSibling.querySelector('.text-secondary').textContent = `${enemyHealth}/2000`;
+      }
+      
+      // 添加战斗日志
+      function addBattleLog(message, isPlayer = false) {
+        const logContainer = document.querySelector('.combat-log');
+        const logEntry = document.createElement('div');
+        logEntry.className = `text-sm ${isPlayer ? 'text-primary' : 'text-gray-300'}`;
+        logEntry.textContent = message;
+        logContainer.appendChild(logEntry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+      }
+      
+      // 处理战斗结果
+      function checkBattleResult() {
+        if (enemyHealth <= 0) {
+          addBattleLog('战斗胜利！', true);
+          
+          // 处理战斗奖励
+          const rewards = handleBattleRewards();
+          
+          setTimeout(() => {
+            // 显示奖励摘要
+            if (rewards && rewards.length > 0) {
+              const rewardSummary = rewards.map(r => `${r.name} x${r.count}`).join('\n');
+              if (typeof showNotification === 'function') {
+                showNotification(`战斗胜利！\n获得奖励：\n${rewardSummary}`, 'success');
+              } else {
+                alert(`战斗胜利！获得奖励：\n${rewardSummary}`);
+              }
+            }
+            
+            // 实际项目中这里会处理奖励发放和返回上一个页面
+            // window.location.href = 'quest.html';
+          }, 1000);
+          return true;
+        }
+        
+        if (playerHealth <= 0) {
+          addBattleLog('战斗失败！', true);
+          setTimeout(() => {
+            if (typeof showNotification === 'function') {
+              showNotification('战斗失败！你需要恢复伤势后再次挑战。', 'error');
+            } else {
+              alert('战斗失败！你需要恢复伤势后再次挑战。');
+            }
+            // 实际项目中这里会处理失败逻辑
+            // window.location.href = 'character.html';
+          }, 1000);
+          return true;
+        }
+        
+        return false;
+      }
+      
+      // 敌人回合
+      function enemyTurn() {
+        // 随机敌人攻击
+        const enemyAttack = Math.floor(Math.random() * 100) + 50;
+        playerHealth = Math.max(0, playerHealth - enemyAttack);
+        
+        addBattleLog(`青牛妖对你造成了 ${enemyAttack} 点伤害！`);
+        updateBattleInfo();
+        
+        // 检查战斗结果
+        if (!checkBattleResult()) {
+          // 进入下一回合
+          currentRound++;
+          updateBattleInfo();
+          addBattleLog(`第 ${currentRound} 回合开始！`);
+        }
+      }
+      
+      // 绑定技能按钮事件
+      skillButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // 获取技能信息
+          const skillName = button.querySelector('.text-gray-300')?.textContent;
+          const skillManaCost = button.querySelector('.text-accent')?.textContent;
+          
+          if (skillName === '逃跑') {
+            // 逃跑逻辑
+            const successRate = 0.3; // 30%成功率
+            if (Math.random() < successRate) {
+              addBattleLog('你成功逃跑了！', true);
+              setTimeout(() => {
+                alert('你成功逃离了战斗！');
+                // window.location.href = 'quest.html';
+              }, 1000);
+            } else {
+              addBattleLog('逃跑失败！', true);
+              // 进入敌人回合
+              setTimeout(enemyTurn, 1000);
+            }
+            return;
+          }
+          
+          if (skillName === '防御') {
+            addBattleLog('你进入了防御状态！', true);
+            // 防御逻辑可以在这里实现
+            // 进入敌人回合
+            setTimeout(enemyTurn, 1000);
+            return;
+          }
+          
+          if (skillName === '使用药品') {
+            addBattleLog('你使用了聚气丹，恢复了200点生命值！', true);
+            playerHealth = Math.min(1500, playerHealth + 200);
+            updateBattleInfo();
+            // 进入敌人回合
+            setTimeout(enemyTurn, 1000);
+            return;
+          }
+          
+          if (skillName === '打开背包') {
+            alert('背包功能待实现');
+            return;
+          }
+          
+          // 处理技能消耗
+          if (skillManaCost) {
+            const manaCost = parseInt(skillManaCost);
+            if (playerMana < manaCost) {
+              addBattleLog('法力不足！', true);
+              return;
+            }
+            playerMana -= manaCost;
+          }
+          
+          // 模拟技能效果
+          const damage = Math.floor(Math.random() * 100) + 100;
+          enemyHealth = Math.max(0, enemyHealth - damage);
+          
+          addBattleLog(`你使用了${skillName}，对青牛妖造成了 ${damage} 点伤害！`, true);
+          updateBattleInfo();
+          
+          // 检查战斗结果
+          if (!checkBattleResult()) {
+            // 进入敌人回合
+            setTimeout(enemyTurn, 1000);
+          }
+        });
+      });
+    });
+
+    // 使用角色数据初始化战斗系统
+    function initBattleSystem(playerData) {
+      if (!playerData) return;
+      
+      // 更新玩家数据
+      this.playerData = playerData;
+      
+      // 更新战斗界面显示的玩家信息
+      document.querySelector('.player-character h3').textContent = playerData.name || '韩立';
+      document.querySelector('.player-character p').textContent = playerData.cultivation || '练气期五层';
+      
+      // 使用角色的实际属性
+      playerHealth = playerData.health || 1500;
+      playerMana = playerData.mana || 1200;
+      
+      // 如果有战斗管理器，可以初始化战斗状态
+      if (battleManager) {
+        battleManager.initBattle(playerData, getEnemyData());
+      }
+      
+      // 显示初始化通知
+      if (typeof showNotification === 'function') {
+        showNotification(`战斗开始！${playerData.name}对阵青牛妖`, 'info');
+      }
+      
+      // 更新战斗信息显示
+      updateBattleInfo();
+    }
+
+    // 使用默认值初始化战斗系统
+    function initBattleSystemWithDefaults() {
+      // 使用默认的玩家数据
+      const defaultPlayerData = {
+        name: '韩立',
+        level: 5,
+        cultivation: '练气期五层',
+        health: 1500,
+        mana: 1200,
+        attack: 200,
+        defense: 80
+      };
+      
+      initBattleSystem(defaultPlayerData);
+    }
+
+    // 获取敌人数据
+    function getEnemyData() {
+      // 在实际项目中，这里可能会从服务器或配置文件获取敌人数据
+      return {
+        name: '青牛妖',
+        level: 6,
+        health: 2000,
+        attack: 150,
+        defense: 60,
+        skills: ['野蛮冲撞', '妖力冲击', '嗜血']
+      };
+    }
+
+    // 处理战斗奖励
+    function handleBattleRewards() {
+      if (!battleManager) {
+        // 使用模拟的奖励数据
+        const rewards = [
+          { name: '下品灵石', count: 50 },
+          { name: '聚气丹', count: 3 },
+          { name: '青牛妖角', count: 1 }
+        ];
+        
+        // 显示奖励通知
+        if (typeof showNotification === 'function') {
+          showNotification(`战斗胜利！获得奖励：${rewards.map(r => `${r.name} x${r.count}`).join(', ')}`, 'success');
+        }
+        
+        // 如果有物品管理器，可以添加奖励物品
+        try {
+          const itemManager = window.require ? window.require('itemManager') : null;
+          if (itemManager) {
+            rewards.forEach(reward => {
+              itemManager.addItem(reward.name, reward.count);
+            });
+          }
+        } catch (e) {
+          console.log('物品系统模块加载中...');
+        }
+        
+        // 如果有角色管理器，可以增加经验值
+        if (characterManager) {
+          characterManager.addExperience(500);
+        }
+        
+        return rewards;
+      }
+      
+      // 使用战斗管理器处理奖励
+      return battleManager.getRewards();
+    }
+  </script>
+</body>
+</html>
